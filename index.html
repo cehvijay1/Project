@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>St. Clair College - COVID-19 Data Analysis</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #e9f8ff;
+            animation: colorChange 3s infinite;
+        }
+
+        @keyframes colorChange {
+            0% { background-color: #e9f8ff; }
+            50% { background-color: #d1eefc; }
+            100% { background-color: #e9f8ff; }
+        }
+
+        .header {
+            text-align: center;
+            padding: 50px 0;
+        }
+
+        .blink {
+            animation: blinker 1.5s linear infinite;
+        }
+
+        @keyframes blinker {
+            50% { opacity: 0; }
+        }
+
+        .content {
+            margin: 30px;
+        }
+
+        .btn-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1 class="blink">St. Clair College - COVID-19 Data Analysis</h1>
+        <p>Subject: Healthcare Analytic</p>
+        <p>Teacher: Amrinder Singh</p>
+        <p>Project by: Vijay Lathwal, Amrit Saini, Karishma Kundal</p>
+    </div>
+
+    <div class="content">
+        <h2>About the Project:</h2>
+        <p>This project aims to provide an in-depth analysis of the COVID-19 pandemic. It is the culmination of rigorous data cleaning, processing, and visualization techniques. Our team, consisting of dedicated members from St. Clair College, have collaborated to bring this insightful dashboard to life.</p>
+
+        <div class="btn-group">
+            <a href="http://65.1.85.13/vijay/covid_vac.csv" class="btn btn-secondary" target="_blank">Dataset</a>
+            <a href="http://65.1.85.13/vijay/clean_df.csv" class="btn btn-secondary" target="_blank">Clean Dataset</a>
+            <a href="http://65.1.85.13/vijay/ppt.pptx" class="btn btn-primary" target="_blank">Presentation</a>
+            <a href="http://65.1.85.13/vijay/p.pdf" class="btn btn-info" target="_blank">Workflow</a>
+            <a href="https://public.tableau.com/app/profile/utkarsha.shinde/viz/BuyerPersona_CaseStudy/Dashboard1" class="btn btn-danger" target="_blank">Tableau Visualization</a>
+        </div>
+    </div>
+</body>
+</html>
+

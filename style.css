@@ -1,0 +1,40 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 20px;
+}
+
+.container {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    color: #333;
+}
+
+#barChart, #scatterPlot, #dataTable, #pieChart {
+    margin: 20px 0;
+    position: relative;
+}
+
+.chart-title {
+    font-weight: bold;
+    text-align: center;
+    margin: 20px 0;
+}
+
+.chart-description {
+    text-align: center;
+    color: #777;
+    margin-bottom: 20px;
+}
+
+/* Highlighting styles for selected chart */
+.highlight {
+    border: 3px solid #007BFF;
+    padding: 10px;
+}
