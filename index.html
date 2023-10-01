@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finance Datasets</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            overflow: auto;
+            position: relative;
+        }
+        #background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            animation: gradient 10s ease infinite;
+            background: linear-gradient(45deg, #ff9a9e, #fad0c4, #ffd1ff, #a18cd1, #fbc2eb);
+            background-size: 500% 500%;
+        }
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        #content {
+            position: relative;
+            z-index: 1;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.8);
+        }
+        #tabs {
+            display: flex;
+            cursor: pointer;
+            padding: 10px;
+            background-color: #f0f0f0;
+        }
+        .tab {
+            padding: 10px;
+            margin: 0 5px;
+            border: 1px solid #ccc;
+            border-bottom: none;
+            border-radius: 5px 5px 0 0;
+        }
+        .tab.active {
+            background-color: #fff;
+            border-bottom: 1px solid #fff;
+        }
+        .tab-content {
+            display: none;
+            border: 1px solid #ccc;
+            padding: 20px;
+            margin-top: -1px;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .table-container {
+            max-width: 100%;
+            overflow: auto;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0,0,0);
+            background-color: rgba(0,0,0,0.4);
+            padding-top: 60px;
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            text-align: center;
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<div id="myModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="document.getElementById('myModal').style.display='none'">&times;</span>
+        <h2>Welcome to our Health Care Project</h2>
+    </div>
+</div>
+
+<div id="background"></div>
+
+<div id="content">
+
+    <div id="tabs">
+        <div class="tab active" onclick="showTab('presentation')">Presentation</div>
+        <div class="tab" onclick="showTab('workflow')">Workflow</div>
+        <div class="tab" onclick="showTab('cleaning')">Python Cleaning Code</div>
+        <div class="tab" onclick="showTab('visualization')">Visualization</div>
+        <div class="tab" onclick="showTab('download')">Download Dataset</div>
+    </div>
+
+    <div id="presentation" class="tab-content active">
+        <h1>Select a CSV file to view</h1>
+        <select id="fileSelect" onchange="loadAndParseCSV()">
+            <option value="">--Select a file--</option>
+            <option value="dataset/clean_df.csv">Clean Dataset</option>
+            <option value="dataset/covid_vac.csv">Covid Vaccine Dataset</option>
+        </select>
+        <div class="table-container">
+            <table id="outputTable" border="1"></table>
+        </div>
+    </div>
+
+    <div id="workflow" class="tab-content">
+        <iframe src="workflow.html" width="100%" height="500" frameborder="0"></iframe>
+    </div>
+
+    <div id="cleaning" class="tab-content">
+        <iframe src="dataset/python_cleandata.html" width="100%" height="500" frameborder="0"></iframe>
+    </div>
+
+    <div id="visualization" class="tab-content">
+        <!-- Insert your visualization content here -->
+    </div>
+
+    <div id="download" class="tab-content">
+        <h1>Download Dataset</h1>
+        <a href="dataset/clean_df.csv" download>Download Clean Dataset</a><br>
+        <a href="dataset/full_dataset.csv" download>Download Full Dataset</a>
+    </div>
+
+</div>
+
+<p style="position: fixed; bottom: 10px; right: 10px;">
+    Project by Vijay Lathwal, Suraj Jain, Karishma Kundal, Amrit Saini, Baljinder Kaur
+</p>
+
+<script>
+function showTab(tabId) {
+    var contents = document.querySelectorAll('.tab-content');
+    for (var i = 0; i < contents.length; i++) {
+        contents[i].classList.remove('active');
+    }
+    var tabs = document.querySelectorAll('.tab');
+    for (var i = 0; i < tabs.length; i++) {
+        tabs[i].classList.remove('active');
+    }
+    document.getElementById(tabId).classList.add('active');
+    var activeTab = Array.prototype.find.call(tabs, function(tab) {
+        return tab.textContent.toLowerCase() === tabId;
+    });
+    activeTab.classList.add('active');
+}
+
+function loadAndParseCSV() {
+    var selectedFile = document.getElementById('fileSelect').value;
+    if (selectedFile) {
+        Papa.parse(selectedFile, {
+            download: true,
+            header: true,
+            complete: function(results) {
+                var table = document.getElementById('outputTable');
+                table.innerHTML = "";  // Clear any existing data
+                var headerRow = document.createElement('tr');
+                results.meta.fields.forEach(function(fieldName) {
+                    var th = document.createElement('th');
+                    th.textContent = fieldName;
+                    headerRow.appendChild(th);
+                });
+                table.appendChild(headerRow);
+
+                // Limit to 10 rows
+                var rowCount = Math.min(10, results.data.length);
+                for (var i = 0; i < rowCount; i++) {
+                    var row = results.data[i];
+                    var tr = document.createElement('tr');
+                    results.meta.fields.forEach(function(fieldName) {
+                        var td = document.createElement('td');
+                        td.textContent = row[fieldName];
+                        tr.appendChild(td);
+                    });
+                    table.appendChild(tr);
+                }
+            }
+        });
+    }
+}
+
+// Show the modal
+window.onload = function() {
+    var modal = document.getElementById('myModal');
+    var span = document.getElementsByClassName("close")[0];
+    modal.style.display = "block";
+    span.onclick = function() {
+        modal.style.display = "none";
+    }
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+}
+</script>
+
+</body>
+</html>
