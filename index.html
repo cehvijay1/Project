@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Healthcare Project - St. Clair College, Mississauga</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+</head>
+<body>
+
+<div class="marquee">
+    <div class="marquee-text">
+        Welcome to our Healthcare Project under the guidance of Amrinder Singh at St. Clair College, Mississauga
+    </div>
+</div>
+
+<div class="container">
+
+    <h1 class="header-text">Healthcare Project</h1>
+    <p class="sub-header-text">Project by Vijay Lathwal, Suraj Jain, Karishma Kundal, Amrit Saini, Baljinder Kaur</p>
+
+    <div class="tabs">
+        <div class="tab" data-tab="presentation">Presentation</div>
+        <div class="tab" data-tab="workflow">Workflow</div>
+        <div class="tab" data-tab="cleaning">Python Cleaning Code</div>
+        <div class="tab" data-tab="visualization">Visualization</div>
+        <div class="tab" data-tab="download">Download Dataset</div>
+   <div class="tab" data-tab="business-problems">Business Problems</div>
+    </div>
+    <div class="tab-content" id="presentation">
+        <h2>Presentation</h2>
+        <select id="fileSelect" onchange="loadAndParseCSV()">
+            <option value="">--Select a file--</option>
+            <option value="dataset/clean_df.csv">Clean Dataset</option>
+            <option value="dataset/covid_vac.csv">Covid Vaccine Dataset</option>
+        </select>
+        <div class="table-container">
+            <table id="outputTable"></table>  <!-- Added table element -->
+        </div>
+    </div>
+
+<div class="tab-content" id="workflow">
+    <h2>Workflow</h2>
+    <p>This section will have the workflow content, including the 5-week progress.</p>
+    <button onclick="loadWorkflow()">Week 1</button>
+    <iframe id="workflowFrame" src="" width="100%" height="500" frameborder="0"></iframe>
+</div>
+    <script>
+    function loadWorkflow(week) {
+        var iframe = document.getElementById('workflowFrame');
+        var sourceUrl = 'workflow.html';  // Modify this URL as needed
+
+        // Append the week parameter to the source URL
+
+        iframe.src = sourceUrl;
+    }
+    </script>
+
+    <div class="tab-content" id="cleaning">
+        <h2>Python Cleaning Code</h2>
+        <p>This section will have the Python cleaning code content.</p>
+        <iframe src="dataset/python_cleandata.html" width="100%" height="500" frameborder="0"></iframe>
+    </div>
+
+    <div class="tab-content" id="visualization">
+        <h2>Visualization</h2>
+        <p>This section will have the visualization content.</p>
+        <button onclick="redirectToTableauVisualization()">Click here to see visualization</button>
+        <iframe src="https://public.tableau.com/views/Healthcaredata_16962121273590/Sheet1?:language=en-GB&publish=yes&:display_count=n&:origin=viz_share_link" width="100%" height="500" frameborder="0"></iframe>
+    </div>
+
+    <script>
+    function redirectToTableauVisualization() {
+        window.open("https://public.tableau.com/views/Healthcaredata_16962121273590/Sheet1?:language=en-GB&publish=yes&:display_count=n&:origin=viz_share_link", "_blank");
+    }
+    </script>
+
+    <div class="tab-content" id="download">
+        <h2>Download Dataset</h2>
+        <p>
+            <a href="dataset/clean_df.csv" download>Download Clean Dataset</a><br>
+            <a href="dataset/covid_vac.csv" download>Download Covid Vaccine Dataset</a>
+        </p>
+    </div>
+<div class="tab-content" id="business-problems">
+    <h2>Business Problems</h2>
+    <iframe src="businessproblems.html" width="100%" height="500" frameborder="0"></iframe>
+</div>
+    <script>
+    function loadAndParseCSV() {
+        var selectedFile = document.getElementById('fileSelect').value;
+        if (selectedFile) {
+            Papa.parse(selectedFile, {
+                download: true,
+                header: true,
+                complete: function(results) {
+                    var table = document.getElementById('outputTable');
+                    table.innerHTML = "";  // Clear any existing data
+                    var headerRow = document.createElement('tr');
+                    results.meta.fields.forEach(function(fieldName) {
+                        var th = document.createElement('th');
+                        th.textContent = fieldName;
+                        headerRow.appendChild(th);
+                    });
+                    table.appendChild(headerRow);
+
+                    // Limit to 10 rows
+                    var rowCount = Math.min(10, results.data.length);
+                    for (var i = 0; i < rowCount; i++) {
+                        var row = results.data[i];
+                        var tr = document.createElement('tr');
+                        results.meta.fields.forEach(function(fieldName) {
+                            var td = document.createElement('td');
+                            td.textContent = row[fieldName];
+                            tr.appendChild(td);
+                        });
+                        table.appendChild(tr);
+                    }
+                }
+            });
+        }
+    }
+    </script>
+
+    <!-- ... other scripts ... -->
+    <script src="script.js"></script>
+</body>
+</html>
